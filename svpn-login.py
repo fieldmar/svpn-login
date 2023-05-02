@@ -7,7 +7,11 @@ Works with OSX and Linux
 TODO: verify server certificate. (requires using pyopenssl instead of
 socket.ssl)
 """
-import distutils.spawn
+try:
+    from shutil import which as exe_finder
+except:
+    # maintain old behvaiour for pre python3.3
+    from distutils import spawn as exe_finder
 import socket, re, sys, os, time, fcntl, signal
 import getpass, getopt, types
 import string
@@ -143,7 +147,7 @@ class DarwinPlatform(Platform):
             raise Exception("Couldn't find ifconfig command")
 
     def find_svpn(self) -> Union[str, None]:
-        path = distutils.spawn.find_executable(SVPN_NAME)
+        path = exe_finder(SVPN_NAME)
         if path:
             return path
         paths_to_check = [
@@ -223,7 +227,7 @@ class LinuxPlatform(Platform):
         self.ifconfig_path = '/sbin/ifconfig'
 
     def find_svpn(self) -> Union[str, None]:
-        path = distutils.spawn.find_executable(SVPN_NAME)
+        path = exe_finder(SVPN_NAME)
         if path:
             return path
         paths_to_check = ['/opt/f5/vpn/svpn', '/usr/local/lib/F5Networks/SSLVPN/svpn_' + machine(), './svpn']
