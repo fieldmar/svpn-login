@@ -11,7 +11,7 @@ try:
     from shutil import which as exe_finder
 except:
     # maintain old behvaiour for pre python3.3
-    from distutils import spawn as exe_finder
+    from distutils.spawn import find_executable as exe_finder
 import socket, re, sys, os, time, fcntl, signal
 import getpass, getopt, types
 import string
